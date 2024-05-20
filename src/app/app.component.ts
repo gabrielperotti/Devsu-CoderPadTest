@@ -1,6 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProductsService } from './shared/services/products.service';
+import { IProduct } from './shared/interfaces/product.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +13,7 @@ import { ProductsService } from './shared/services/products.service';
 })
 export class AppComponent implements OnInit {
   private _ProductsService = inject(ProductsService);
+  private products: IProduct[] = [];
 
   constructor() { }
 
@@ -20,12 +23,13 @@ export class AppComponent implements OnInit {
 
   async initializeComponent() {
     try {
-      this._ProductsService.getAll().subscribe({
-        next: products => console.log(products)
-      });
+      const date = new Date();
+      const tmp = date.getTime().toString();
+      this.products = await firstValueFrom(this._ProductsService.getAll());
+      console.log(this.products);
     } catch (e) {
       console.log(e);
-      alert('error trying to initialize');
+      alert('error fetching data');
     }
   }
 }
