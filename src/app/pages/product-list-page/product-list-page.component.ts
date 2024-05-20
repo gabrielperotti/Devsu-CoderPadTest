@@ -24,8 +24,13 @@ export class ProductListPageComponent implements OnInit {
     this.initializeComponent();
   }
 
-  async initializeComponent() {
+  initializeComponent() {
+    this.getProducts();
+  }
+
+  async getProducts() {
     try {
+      this.products = [];
       this.products = await firstValueFrom(this._ProductsService.getAll());
     } catch (e) {
       console.log(e);
@@ -34,10 +39,15 @@ export class ProductListPageComponent implements OnInit {
   }
 
   onEdit(product: IProduct) {
-    this._Router.navigate(['/products', 'form'], {queryParams: {id: product.id}})
+    this._Router.navigate(['/products', 'form'], { queryParams: { id: product.id } })
   }
 
   onDelete(product: IProduct) {
-    console.log(product);
+    if (confirm('Desea eliminar este producto?')) {
+      this._ProductsService.delete(product).subscribe({
+        next: async () => await this.getProducts(),
+        error: async () => await this.getProducts()
+      });
+    }
   }
 }
