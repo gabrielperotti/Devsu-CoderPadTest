@@ -37,9 +37,7 @@
             <span class="product-label">Fecha Reestructuraci&oacute;n:</span> {{product.date_revision | date:'dd/MM/yyyy'}}<br>
           </td>
           <td class="actions">
-            <button class="icon"> <!-- crear componente menu -->
-              <img src="../../../assets/icons/menu-dots-vertical.png" class="pointer" style="max-width: 15px;"/>
-            </button>
+            <app-actions-dropdown (edit)="onEdit(product)" (delete)="onDelete(product)"></app-actions-dropdown>
           </td>
         </tr>
         <tr *ngIf="products?.length == 0">

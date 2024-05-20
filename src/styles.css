@@ -77,13 +77,6 @@ table tr:hover {
   background-color: rgb(247, 247, 247);
 }
 
-table .product-logo {
-  max-width: 50px;
-  border: 1px solid rgb(228, 228, 228);
-  box-shadow: 2px 5px 10px gray;
-  border-radius: 5px;
-}
-
 @media screen and (max-width: 720px) {
 
   table .display-desktop {
@@ -103,26 +96,6 @@ table .product-logo {
   table td {
     padding: 5px;
     font-style: italic;
-  }
-
-  table .product-logo {
-    float: right;
-  }
-
-  table .product-name {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-bottom: 5px;
-  }
-
-  table .product-label {
-    font-style: normal;
-    font-weight: bold;
-  }
-
-  table .actions {
-    vertical-align: top;
   }
 }
 
