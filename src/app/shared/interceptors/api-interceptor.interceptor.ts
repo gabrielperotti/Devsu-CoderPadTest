@@ -1,4 +1,5 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 export const apiInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -6,7 +7,7 @@ export const apiInterceptor: HttpInterceptorFn = (
 ) => {
   const request = req.clone({
     setHeaders: {
-      authorId: '1'
+      authorId: environment.authorId
     }
   })
   return next(request);

@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  baseUrl = "https://tribu-ti-staffing-desarrollo-afangwbmcrhucqfh.z01.azurefd.net/ipf-msa-productosfinancieros/bp/products";
-
+  private _baseUrl = `${environment.baseUrl}/bp/products`;
   private _http = inject(HttpClient);
 
   constructor() { }
 
   getAll () {
-    return this._http.get(this.baseUrl);
+    return this._http.get(this._baseUrl);
   }
 }
