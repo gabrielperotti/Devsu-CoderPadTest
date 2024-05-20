@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-product-form-page',
@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './product-form-page.component.html',
   styleUrl: './product-form-page.component.css'
 })
-export class ProductFormPageComponent implements OnInit {
+export class ProductFormPageComponent implements OnInit, OnDestroy {
   public form!: UntypedFormGroup;
   public product!: IProduct | undefined;
   public submitted = false;
@@ -23,6 +23,10 @@ export class ProductFormPageComponent implements OnInit {
   private _FormBuilder = inject(UntypedFormBuilder);
   private _Router = inject(Router);
   private _route = inject(ActivatedRoute);
+
+  private _idInputChangeSub!: Subscription;
+  private _idFormChangeSub!: Subscription;
+  public _validIdInput = true;
 
   constructor() { }
 
@@ -54,9 +58,24 @@ export class ProductFormPageComponent implements OnInit {
       date_revision: [{ value: date_revision, disabled: true }, Validators.required],
     })
 
-    this.form.valueChanges.subscribe(() => {
+    this._idFormChangeSub = this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
     });
+
+    this._idInputChangeSub = this.f['id'].valueChanges
+      .pipe(
+        startWith(''),
+        debounceTime(100),
+        distinctUntilChanged(),
+        switchMap(async newId => {
+          this._validIdInput = !await firstValueFrom(this._ProductsService.verification(newId));
+          return of(newId);
+        })
+      )
+      .subscribe(() => {
+        const value = this.f['id'].value;
+        console.log(value);
+      })
 
     this.formValueChanged = !!this.product?.id;
   }
@@ -87,5 +106,10 @@ export class ProductFormPageComponent implements OnInit {
         subscription.unsubscribe();
       })
     }
+  }
+
+  ngOnDestroy(): void {
+    this._idFormChangeSub.unsubscribe();
+    this._idInputChangeSub.unsubscribe();
   }
 }

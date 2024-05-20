@@ -25,9 +25,9 @@ export class ProductsService {
     )
   }
 
-  verification(product: IProduct | string): Observable<void> {
+  verification(product: IProduct | string): Observable<boolean> {
     const id = (typeof product == 'string') ? product : product.id;
-    return this._http.get<void>(this._baseUrl + '/verification?id=' + id).pipe(
+    return this._http.get<boolean>(this._baseUrl + '/verification?id=' + id).pipe(
       catchError(this.handleError)
     );
   }

@@ -59,6 +59,10 @@
   color: red;
 }
 
+.form-control .success {
+  color: green;
+}
+
 button {
   height: 44px;
   padding: 0 15px;
