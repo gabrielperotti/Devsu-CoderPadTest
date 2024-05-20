@@ -3,7 +3,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-product-form-page',
@@ -14,13 +15,14 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class ProductFormPageComponent implements OnInit {
   public form!: UntypedFormGroup;
-  public product!: IProduct;
+  public product!: IProduct | undefined;
   public submitted = false;
   public formValueChanged = false;
 
   private _ProductsService = inject(ProductsService);
   private _FormBuilder = inject(UntypedFormBuilder);
   private _Router = inject(Router);
+  private _route = inject(ActivatedRoute);
 
   constructor() { }
 
@@ -30,6 +32,8 @@ export class ProductFormPageComponent implements OnInit {
 
   async initializeComponent() {
     try {
+      const id = this._route.snapshot.queryParamMap.get('id');
+      this.product = id ? await firstValueFrom(this._ProductsService.getOne(id)) : undefined;
       this.buildForm();
     } catch (e) {
       console.log(e);
@@ -39,19 +43,22 @@ export class ProductFormPageComponent implements OnInit {
 
   get f() { return this.form.controls }
   buildForm() {
-    const now = new Date();
+    const date_release = (this.product?.date_release ? new Date(this.product?.date_release) : new Date()).toISOString().substring(0, 10);
+    const date_revision = (this.product?.date_revision ? new Date(this.product?.date_revision) : new Date()).toISOString().substring(0, 10);
     this.form = this._FormBuilder.group({
-      id: ['', Validators.required],
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      logo: ['', Validators.required],
-      date_release: [now, Validators.required],
-      date_revision: [{ value: now, disabled: true }, Validators.required],
+      id: [this.product?.id ?? '', Validators.required],
+      name: [this.product?.name ?? '', Validators.required],
+      description: [this.product?.description ?? '', Validators.required],
+      logo: [this.product?.logo ?? '', Validators.required],
+      date_release: [date_release, Validators.required],
+      date_revision: [{ value: date_revision, disabled: true }, Validators.required],
     })
 
     this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
     });
+
+    this.formValueChanged = !!this.product?.id;
   }
 
   return() {

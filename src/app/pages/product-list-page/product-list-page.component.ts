@@ -4,18 +4,19 @@ import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { firstValueFrom } from 'rxjs';
 import { ActionsDropdownComponent } from '../../shared/components/actions-dropdown/actions-dropdown.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule, ActionsDropdownComponent, RouterLink],
+  imports: [CommonModule, ActionsDropdownComponent, RouterLink, RouterModule],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css'
 })
 export class ProductListPageComponent implements OnInit {
-  private _ProductsService = inject(ProductsService);
   public products!: IProduct[];
+  private _ProductsService = inject(ProductsService);
+  private _Router = inject(Router);
 
   constructor() { }
 
@@ -33,7 +34,7 @@ export class ProductListPageComponent implements OnInit {
   }
 
   onEdit(product: IProduct) {
-    console.log(product);
+    this._Router.navigate(['/products', 'form'], {queryParams: {id: product.id}})
   }
 
   onDelete(product: IProduct) {

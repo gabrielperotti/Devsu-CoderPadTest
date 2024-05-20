@@ -12,7 +12,7 @@
           <label for="" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
             ID <span class="required">*</span>
           </label>
-          <input type="text" name="id" formControlName="id" placeholder="id del producto"
+          <input type="text" name="id" formControlName="id" placeholder="id del producto" [readOnly]="product?.id"
             [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['id'].errors?.['required']">
             ID no v&aacute;lido!
@@ -80,8 +80,8 @@
       </div>
 
       <div class="form-row">
-        <button class="reset" type="button" (click)="return()" *ngIf="!formValueChanged">Volver</button>
-        <button class="reset" type="button" (click)="reset()" *ngIf="formValueChanged">Reiniciar</button>
+        <button class="reset" type="button" (click)="return()" *ngIf="!formValueChanged || product?.id">Cancelar</button>
+        <button class="reset" type="button" (click)="reset()" *ngIf="formValueChanged && !product?.id">Reiniciar</button>
         <button class="submit">Enviar</button>
       </div>
     </form>

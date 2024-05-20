@@ -122,6 +122,15 @@ button:focus {
   outline: none;
 }
 
+input::placeholder {
+  color: rgb(180, 180, 180);
+}
+
+input:read-only, input:disabled {
+  background-color: rgb(232, 232, 232);
+  color: rgb(130, 130, 130);
+}
+
 button {
   opacity: 0.8;
   cursor: pointer;

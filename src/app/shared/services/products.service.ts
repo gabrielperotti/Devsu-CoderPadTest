@@ -13,27 +13,35 @@ export class ProductsService {
 
   constructor() { }
 
-  getAll (): Observable<IProduct[]> {
+  getAll(): Observable<IProduct[]> {
     return this._http.get<IProduct[]>(this._baseUrl);
   }
 
-  verification (product: IProduct | string): Observable<void> {
+  /* refactor: ask for right endpoint */
+  getOne(product: IProduct | string): Observable<IProduct> {
+    const id = (typeof product == 'string') ? product : product.id;
+    return this.getAll().pipe(
+      map((products: IProduct[]) => products.find(p => p.id === id) as IProduct)
+    )
+  }
+
+  verification(product: IProduct | string): Observable<void> {
     const id = (typeof product == 'string') ? product : product.id;
     return this._http.get<void>(this._baseUrl + '/verification?id=' + id);
   }
 
-  create (product: IProduct): Observable<IProduct> {
+  create(product: IProduct): Observable<IProduct> {
     return this._http.post<IProduct>(this._baseUrl, product);
   }
 
-  update (product: IProduct): Observable<IProduct> {
+  update(product: IProduct): Observable<IProduct> {
     return this._http.put<IProduct>(this._baseUrl, product);
   }
 
-  delete (product: IProduct | string): Observable<void> {
+  delete(product: IProduct | string): Observable<void> {
     const id = (typeof product == 'string') ? product : product.id;
     return this._http.delete<void>(this._baseUrl + '?id=' + id).pipe(
-      map(el => {})
+      map(el => { })
     );
   }
 }
