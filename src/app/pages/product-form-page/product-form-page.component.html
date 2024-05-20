@@ -1,1 +1,89 @@
-<p>product-form-page works!</p>
+<div class="product-form-container">
+  <div class="form-container">
+
+    <div class="form-header">
+      Formulario de Registro
+    </div>
+
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-row">
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+            ID <span class="required">*</span>
+          </label>
+          <input type="text" name="id" formControlName="id" placeholder="id del producto"
+            [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['id'].errors?.['required']">
+            ID no v&aacute;lido!
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
+            Nombre <span class="required">*</span>
+          </label>
+          <input type="text" name="name" formControlName="name" placeholder="nombre"
+            [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['name'].errors?.['required']">
+            Este campo es requerido!
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
+            Descripci&oacute;n <span class="required">*</span>
+          </label>
+          <input type="text" name="description" formControlName="description" placeholder="Descripci&oacute;n detallada"
+            [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['description'].errors?.['required']">
+            Este campo es requerido!
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
+            Logo <span class="required">*</span>
+          </label>
+          <input type="text" name="logo" formControlName="logo" placeholder="url del logo"
+            [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['logo'].errors?.['required']">
+            Este campo es requerido!
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
+            Fecha de Liberaci&oacute;n <span class="required">*</span>
+          </label>
+          <input type="date" name="date_release" formControlName="date_release"
+            [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['date_release'].errors?.['required']">
+            Este campo es requerido!
+          </div>
+        </div>
+
+        <div class="form-control">
+          <label for="" [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
+            Fecha de revisi&oacute;n <span class="required">*</span>
+          </label>
+          <input type="date" name="date_revision" formControlName="date_revision"
+            [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
+          <div class="error" *ngIf="submitted && f['date_revision'].errors?.['required']">
+            Este campo es requerido!
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <button class="reset" type="button" (click)="return()" *ngIf="!formValueChanged">Volver</button>
+        <button class="reset" type="button" (click)="reset()" *ngIf="formValueChanged">Reiniciar</button>
+        <button class="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
