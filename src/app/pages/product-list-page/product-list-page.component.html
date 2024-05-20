@@ -1,1 +1,47 @@
-<p>product-list-page works!</p>
+<div class="product-list-container">
+  <div class="form-container">
+    <input type="text" class="search" placeholder="buscar..." />
+    <button class="add">Agregar</button>
+  </div>
+
+  <div class="product-list-table">
+    <table>
+      <thead>
+        <tr>
+          <th class="display-desktop">Logo</th>
+          <th class="display-desktop">Nombre del producto</th>
+          <th class="display-desktop">Descripci&oacute;n</th>
+          <th class="display-desktop">Fecha de liberaci&oacute;n</th>
+          <th class="display-desktop">Fecha de reestructuraci&oacute;n</th>
+          <th class="display-mobile">Productos</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!products">
+          <td colspan="6"> Cargando... </td>
+        </tr>
+        <tr *ngFor="let product of products" class="pointer">
+          <td class="display-desktop">
+            <img class="product-logo" [src]="product.logo" alt="logo" />
+          </td>
+          <td class="display-desktop">{{product.name}}</td>
+          <td class="display-desktop">{{product.description}}</td>
+          <td class="display-desktop">{{product.date_release | date:'dd/MM/yyyy'}}</td>
+          <td class="display-desktop">{{product.date_revision | date:'dd/MM/yyyy'}}</td>
+          <td class="display-mobile">
+            <img class="product-logo" [src]="product.logo" alt="logo" />
+            <div class="product-name"> {{product.name}} </div>
+            <span class="product-label">Descripci&oacute;n:</span> {{product.description}}<br>
+            <span class="product-label">Fecha Liberaci&oacute;n:</span> {{product.date_release | date:'dd/MM/yyyy'}}<br>
+            <span class="product-label">Fecha Reestructuraci&oacute;n:</span> {{product.date_revision | date:'dd/MM/yyyy'}}<br>
+          </td>
+          <td class="actions">|</td>
+        </tr>
+        <tr *ngIf="products?.length == 0">
+          <td colspan="6"> Sin productos que mostrar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+.product-list-container {
+  margin-top: 25px;
+}
+
+input.search {
+  width: 300px;
+  max-width: 50vw;
+}
+
+button.add {
+  background-color: gold;
+  color: black;
+  float: right;
+  height: 44px;
+  padding: 0 15px;
+}
