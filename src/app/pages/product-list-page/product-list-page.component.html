@@ -21,7 +21,7 @@
         <tr *ngIf="!products">
           <td colspan="6"> Cargando... </td>
         </tr>
-        <tr *ngFor="let product of products" class="pointer">
+        <tr *ngFor="let product of products">
           <td class="display-desktop">
             <img class="product-logo" [src]="product.logo" alt="logo" />
           </td>
@@ -36,7 +36,11 @@
             <span class="product-label">Fecha Liberaci&oacute;n:</span> {{product.date_release | date:'dd/MM/yyyy'}}<br>
             <span class="product-label">Fecha Reestructuraci&oacute;n:</span> {{product.date_revision | date:'dd/MM/yyyy'}}<br>
           </td>
-          <td class="actions">|</td>
+          <td class="actions">
+            <button class="icon"> <!-- crear componente menu -->
+              <img src="../../../assets/icons/menu-dots-vertical.png" class="pointer" style="max-width: 15px;"/>
+            </button>
+          </td>
         </tr>
         <tr *ngIf="products?.length == 0">
           <td colspan="6"> Sin productos que mostrar</td>
