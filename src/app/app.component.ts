@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   private _ProductsService = inject(ProductsService);
-  private products: IProduct[] = [];
+  public products: IProduct[] = [];
 
   constructor() { }
 

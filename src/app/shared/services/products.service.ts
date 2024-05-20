@@ -17,6 +17,11 @@ export class ProductsService {
     return this._http.get<IProduct[]>(this._baseUrl);
   }
 
+  verification (product: IProduct | string): Observable<void> {
+    const id = (typeof product == 'string') ? product : product.id;
+    return this._http.get<void>(this._baseUrl + '/verification?id=' + id);
+  }
+
   create (product: IProduct): Observable<IProduct> {
     return this._http.post<IProduct>(this._baseUrl, product);
   }
