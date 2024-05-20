@@ -3,11 +3,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { firstValueFrom } from 'rxjs';
+import { ActionsDropdownComponent } from '../../shared/components/actions-dropdown/actions-dropdown.component';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ActionsDropdownComponent],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css'
 })
@@ -31,5 +32,13 @@ export class ProductListPageComponent implements OnInit {
       console.log(e);
       alert('error fetching data');
     }
+  }
+
+  onEdit(product: IProduct) {
+    console.log(product);
+  }
+
+  onDelete(product: IProduct) {
+    console.log(product);
   }
 }
