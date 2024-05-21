@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IProduct } from '../interfaces/product.interface';
 
@@ -21,7 +21,8 @@ export class ProductsService {
   getOne(product: IProduct | string): Observable<IProduct> {
     const id = (typeof product == 'string') ? product : product.id;
     return this.getAll().pipe(
-      map((products: IProduct[]) => products.find(p => p.id === id) as IProduct)
+      map((products: IProduct[]) => products.find(p => p.id === id) as IProduct),
+      catchError(this.handleError)
     )
   }
 
@@ -52,8 +53,11 @@ export class ProductsService {
     );
   }
 
-  handleError(error: HttpErrorResponse) {
-    console.log(error);
-    return of();
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = (error.error instanceof ErrorEvent) ?
+      `An error occurred: ${error.error.message}` :
+      `Server returned code: ${error.status}, error message is: ${error.message}`;
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }
