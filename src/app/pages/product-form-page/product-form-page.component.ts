@@ -25,7 +25,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
 
   private _idInputChangeSub!: Subscription;
-  private _idFormChangeSub!: Subscription;
+  private _formChangeSub!: Subscription;
   public _validIdInput = true;
 
   constructor() { }
@@ -58,7 +58,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       date_revision: [{ value: date_revision, disabled: true }, Validators.required],
     })
 
-    this._idFormChangeSub = this.form.valueChanges.subscribe(() => {
+    this._formChangeSub = this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
     });
 
@@ -109,7 +109,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._idFormChangeSub.unsubscribe();
+    this._formChangeSub.unsubscribe();
     this._idInputChangeSub.unsubscribe();
   }
 }
