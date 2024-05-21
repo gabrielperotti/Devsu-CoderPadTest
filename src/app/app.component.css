@@ -1,0 +1,28 @@
+.error-panel {
+  font-size: 1.5em;
+  color: firebrick;
+  font-weight: bold;
+  background-color: pink;
+  min-height: 40px;
+  padding: 15px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+}
+
+.error-panel span {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-panel button {
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+  color: firebrick;
+  font-size: 1em;
+}
+
+.error-panel img {
+  max-width: 15px;
+}

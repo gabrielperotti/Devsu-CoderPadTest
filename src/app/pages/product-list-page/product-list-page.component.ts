@@ -7,6 +7,7 @@ import { ActionsDropdownComponent } from '../../shared/components/actions-dropdo
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ProductFilterPipe } from '../../shared/pipes/product-filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { ErrorService } from '../../shared/services/error.service';
 
 @Component({
   selector: 'app-product-list-page',
@@ -24,6 +25,7 @@ export class ProductListPageComponent implements OnInit {
   private _ProductsService = inject(ProductsService);
   private _Router = inject(Router);
   private _ChangeDetectorRef = inject(ChangeDetectorRef);
+  private _ErrorService = inject(ErrorService);
 
   public page = 1;
   public pageSizes = [5, 10, 20];
@@ -47,7 +49,7 @@ export class ProductListPageComponent implements OnInit {
       this.productsCount = this.products.length;
     } catch (e) {
       console.log(e);
-      alert('error fetching data');
+      this._ErrorService.emitError('error fetching data');
     }
   }
 

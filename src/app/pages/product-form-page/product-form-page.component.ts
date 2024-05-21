@@ -5,6 +5,7 @@ import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap, tap } from 'rxjs';
+import { ErrorService } from '../../shared/services/error.service';
 
 @Component({
   selector: 'app-product-form-page',
@@ -23,6 +24,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private _FormBuilder = inject(UntypedFormBuilder);
   private _Router = inject(Router);
   private _route = inject(ActivatedRoute);
+  private _ErrorService = inject(ErrorService);
 
   private _idInputChangeSub!: Subscription;
   private _formChangeSub!: Subscription;
@@ -42,7 +44,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       this.buildForm();
     } catch (e) {
       console.log(e);
-      alert('error fetching data');
+      this._ErrorService.emitError('error fetching data');
     }
   }
 
