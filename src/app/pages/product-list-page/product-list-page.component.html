@@ -1,9 +1,10 @@
 <div class="product-list-container">
   <div class="form-container">
     <div class="search-container">
-      <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch" (input)="onSearchInput($event)"/>
+      <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch"
+        (input)="onSearchInput($event)" />
     </div>
-    
+
     <button class="add" [routerLink]="['/products', 'form']">
       <img src="assets/icons/add.png" alt="add product">
       Agregar
@@ -51,23 +52,19 @@
           <td colspan="6"> Sin productos que mostrar</td>
         </tr>
       </tbody>
-      <tfoot *ngIf="products">
-        <tr>
-          <td colspan="6">
-            <span class="results">{{productsCount}} resultados</span>
-            <span class="page-sizes">
-              Tam x Pág: &nbsp; <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">
-                <option [value]="size" *ngFor="let size of pageSizes">{{size}}</option>
-              </select>
-            </span>
-            <span class="pages">
-              <button (click)="prevPage()" class="pointer"><img src="assets/icons/angle-left.png" alt="prevPage" /></button>
-              Pág: &nbsp; <input type="number" [(ngModel)]="page" (change)="onPageChange($event)">
-              <button (click)="nextPage()" class="pointer"><img src="assets/icons/angle-right.png" alt="nextPage" /></button>
-            </span>
-          </td>
-        </tr>
-      </tfoot>
     </table>
+    <div class="tfoot" *ngIf="products">
+      <span class="results">{{productsCount}} resultados</span>
+      <span class="page-sizes">
+        Tam: &nbsp; <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">
+          <option [value]="size" *ngFor="let size of pageSizes">{{size}}</option>
+        </select>
+      </span>
+      <span class="pages">
+        <button (click)="prevPage()" class="pointer"><img src="assets/icons/angle-left.png" alt="prevPage" /></button>
+        Pág: &nbsp; <input type="number" [(ngModel)]="page" (change)="onPageChange($event)">
+        <button (click)="nextPage()" class="pointer"><img src="assets/icons/angle-right.png" alt="nextPage" /></button>
+      </span>
+    </div>
   </div>
 </div>

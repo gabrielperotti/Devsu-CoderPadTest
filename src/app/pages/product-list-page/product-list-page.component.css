@@ -24,39 +24,44 @@ table .product-logo {
   border-radius: 5px;
 }
 
-table .results {
+.tfoot {
+  padding: 25px 15px;
+  min-height: 10px;
+}
+
+.tfoot .results {
   float: left;
   margin-top: 5px;
 }
 
-table .pages {
+.tfoot .pages {
   float: right;
-  padding-right: 50px;
+  padding-right: 30px;
   display: flex;
   align-items: center;
 }
 
-table .page-sizes {
+.tfoot .page-sizes {
   float: right;
   display: flex;
   align-items: center;
 }
 
-table .pages button {
+.tfoot .pages button {
   background-color: transparent;
   border: none;
 }
 
-table .pages button:focus,
-table .pages button:hover {
+.tfoot .pages button:focus,
+.tfoot .pages button:hover {
   box-shadow: none;
 }
 
-table .pages img {
+.tfoot .pages img {
   max-width: 11px;
 }
 
-table .pages input {
+.tfoot .pages input {
   height: 20px;
   width: 40px;
 }
@@ -86,19 +91,24 @@ table .pages input {
     vertical-align: top;
   }
 
-  table .results {
+  .tfoot {
+    padding: 0px 0px;
+    min-height: 50px;
+  }
+
+  .tfoot .results {
     float: none;
     display: block;
-    margin-bottom: 10px;
+    margin: 20px 0 15px 5px;
   }
 
-  table .pages {
+  .tfoot .pages {
     float: left;
     display: block;
   }
 
-  table .page-sizes {
-    float: left;
+  .tfoot .page-sizes {
+    float: right;
     display: block;
   }
 }
