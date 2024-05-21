@@ -14,15 +14,17 @@
           </label>
           <input type="text" id="id" name="id" formControlName="id" placeholder="id del producto"
             [readOnly]="product?.id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
-          <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
-            Comprobando...
-          </div>
-          <div class="success" *ngIf="!_checkValidIdInput && _validIdInput && f['id'].value?.length > 0">
-            ID disponible!
-          </div>
-          <div class="error" *ngIf="!_checkValidIdInput && !_validIdInput && f['id'].value?.length > 0">
-            ID no v&aacute;lido!
-          </div>
+          <span *ngIf="!product?.id">
+            <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
+              Comprobando...
+            </div>
+            <div class="success" *ngIf="!_checkValidIdInput && _validIdInput && f['id'].value?.length > 0">
+              ID disponible!
+            </div>
+            <div class="error" *ngIf="!_checkValidIdInput && !_validIdInput && f['id'].value?.length > 0">
+              ID no v&aacute;lido!
+            </div>
+          </span>
           <div class="error" *ngIf="submitted && f['id'].errors?.['required']">
             Este campo es requerido!
           </div>
