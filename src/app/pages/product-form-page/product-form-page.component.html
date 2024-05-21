@@ -19,7 +19,7 @@
             <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
               Comprobando...
             </div>
-            <div class="success" *ngIf="!_checkValidIdInput && !f['id'].errors?.['idTaken']">
+            <div class="success" *ngIf="f['id'].value.length > 0 && !_checkValidIdInput && !f['id'].errors?.['idTaken']">
               ID disponible!
             </div>
             <div class="error" *ngIf="!_checkValidIdInput && f['id'].errors?.['idTaken']">
