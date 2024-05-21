@@ -27,7 +27,7 @@ git clone https://github.com/gabrielperotti/Devsu-CoderPadTest.git
 cd Devsu-CoderPadTest
 docker-compose up --build
 ```
-Esto construirá y levantará todos los servicios necesarios.
+Esto construirá y levantará todos los servicios necesarios. Luego, Ingresa a http://localhost/
 
 ## Proyecto descargable .zip
 
