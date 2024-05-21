@@ -31,12 +31,12 @@ Esto construirá y levantará todos los servicios necesarios.
 
 ## Proyecto descargable .zip
 
-(https://gabrielperotti.com/demo/devsu/source.zip)
+https://gabrielperotti.com/demo/devsu/source.zip
 
 ## Live Demo
 
-(https://gabrielperotti.com/demo/devsu/test)
+https://gabrielperotti.com/demo/devsu/test
 
 ## Desarrollado por
 
-(https://gabrielperotti.com)
+https://gabrielperotti.com
