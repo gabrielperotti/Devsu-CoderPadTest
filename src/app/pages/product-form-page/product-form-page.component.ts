@@ -4,7 +4,7 @@ import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators }
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-form-page',
@@ -27,6 +27,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private _idInputChangeSub!: Subscription;
   private _formChangeSub!: Subscription;
   public _validIdInput = true;
+  public _checkValidIdInput = false;
 
   constructor() { }
 
@@ -64,17 +65,20 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
 
     this._idInputChangeSub = this.f['id'].valueChanges
       .pipe(
+        tap(el => this._checkValidIdInput = true),
         startWith(''),
         debounceTime(100),
         distinctUntilChanged(),
-        switchMap(async newId => {
-          this._validIdInput = !await firstValueFrom(this._ProductsService.verification(newId));
+        /* switchMap(async newId => {
+          this._validIdInput = newId ? await firstValueFrom(this._ProductsService.verification(newId)) : false;
           return of(newId);
-        })
+        }) */
       )
-      .subscribe(() => {
-        const value = this.f['id'].value;
-        console.log(value);
+      .subscribe(async newId => {
+        this._validIdInput = newId ? !await firstValueFrom(this._ProductsService.verification(newId)) : false;
+        this._checkValidIdInput = false;
+        // const value = this.f['id'].value;
+        // console.log(value);
       })
 
     this.formValueChanged = !!this.product?.id;

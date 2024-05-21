@@ -55,12 +55,20 @@
   border: 1px solid red;
 }
 
+.form-control .error, .form-control .success, .form-control .hint {
+  font-size: 0.8em;
+}
+
 .form-control .error {
   color: red;
 }
 
 .form-control .success {
   color: green;
+}
+
+.form-control .hint {
+  color: rgb(156, 156, 156);
 }
 
 button {

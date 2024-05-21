@@ -9,15 +9,18 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+          <label for="id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
             ID <span class="required">*</span>
           </label>
-          <input type="text" name="id" formControlName="id" placeholder="id del producto" [readOnly]="product?.id"
-            [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
-          <div class="success" *ngIf="_validIdInput && f['id'].value.length > 0">
+          <input type="text" id="id" name="id" formControlName="id" placeholder="id del producto"
+            [readOnly]="product?.id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+          <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
+            Comprobando...
+          </div>
+          <div class="success" *ngIf="!_checkValidIdInput && _validIdInput && f['id'].value?.length > 0">
             ID disponible!
           </div>
-          <div class="error" *ngIf="!_validIdInput && f['id'].value.length > 0">
+          <div class="error" *ngIf="!_checkValidIdInput && !_validIdInput && f['id'].value?.length > 0">
             ID no v&aacute;lido!
           </div>
           <div class="error" *ngIf="submitted && f['id'].errors?.['required']">
@@ -26,10 +29,10 @@
         </div>
 
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
+          <label for="name" [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
             Nombre <span class="required">*</span>
           </label>
-          <input type="text" name="name" formControlName="name" placeholder="nombre"
+          <input type="text" id="name" name="name" formControlName="name" placeholder="nombre" autocomplete="off"
             [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['name'].errors?.['required']">
             Este campo es requerido!
@@ -39,10 +42,11 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
+          <label for="description" [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
             Descripci&oacute;n <span class="required">*</span>
           </label>
-          <input type="text" name="description" formControlName="description" placeholder="Descripci&oacute;n detallada"
+          <input type="text" id="description" name="description" formControlName="description"
+            placeholder="Descripci&oacute;n detallada"
             [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['description'].errors?.['required']">
             Este campo es requerido!
@@ -50,10 +54,10 @@
         </div>
 
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
+          <label for="logo" [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
             Logo <span class="required">*</span>
           </label>
-          <input type="text" name="logo" formControlName="logo" placeholder="url del logo"
+          <input type="text" id="logo" name="logo" formControlName="logo" placeholder="url del logo"
             [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['logo'].errors?.['required']">
             Este campo es requerido!
@@ -63,10 +67,10 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
+          <label for="date_release" [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
             Fecha de Liberaci&oacute;n <span class="required">*</span>
           </label>
-          <input type="date" name="date_release" formControlName="date_release"
+          <input type="date" id="date_release" name="date_release" formControlName="date_release"
             [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['date_release'].errors?.['required']">
             Este campo es requerido!
@@ -74,10 +78,10 @@
         </div>
 
         <div class="form-control">
-          <label for="" [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
+          <label for="date_revision" [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
             Fecha de revisi&oacute;n <span class="required">*</span>
           </label>
-          <input type="date" name="date_revision" formControlName="date_revision"
+          <input type="date" id="date_revision" name="date_revision" formControlName="date_revision"
             [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
           <div class="error" *ngIf="submitted && f['date_revision'].errors?.['required']">
             Este campo es requerido!
