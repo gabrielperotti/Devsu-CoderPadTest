@@ -22,7 +22,6 @@ export class ActionsDropdownComponent implements OnInit {
   }
 
   toggleDropdown(event: Event) {
-    console.log('toggleDropdown');
     /* to avoid clickOutside trigger */
     setTimeout(() => {
       this.isOpen = !this.isOpen;
@@ -32,7 +31,6 @@ export class ActionsDropdownComponent implements OnInit {
 
   @HostListener('document:click', ['event'])
   clickOutside(event: Event) {
-    console.log('clickOutside', this.isOpen)
     /* to avoid closing before opening */
     if (this.isOpen) this.isOpen = false;
     this._ChangeDetectorRef.detectChanges();
