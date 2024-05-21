@@ -9,22 +9,27 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+          <label for="id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required']) || f['id'].errors?.['idTaken']}">
             ID <span class="required">*</span>
           </label>
           <input type="text" id="id" name="id" formControlName="id" placeholder="id del producto"
-            [readOnly]="product?.id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required'])}">
+            [readOnly]="product?.id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required']) || f['id'].errors?.['idTaken']}">
+
           <span *ngIf="!product?.id">
             <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
               Comprobando...
             </div>
-            <div class="success" *ngIf="!_checkValidIdInput && _validIdInput && f['id'].value?.length > 0">
+            <div class="success" *ngIf="!_checkValidIdInput && !f['id'].errors?.['idTaken']">
               ID disponible!
             </div>
-            <div class="error" *ngIf="!_checkValidIdInput && !_validIdInput && f['id'].value?.length > 0">
+            <div class="error" *ngIf="!_checkValidIdInput && f['id'].errors?.['idTaken']">
               ID no v&aacute;lido!
             </div>
           </span>
+
+          <div class="error" *ngIf="submitted && (f['id'].errors?.['minlength'] || f['id'].errors?.['maxlength'])">
+            Largo mínimo 3 y máximo 10!
+          </div>
           <div class="error" *ngIf="submitted && f['id'].errors?.['required']">
             Este campo es requerido!
           </div>
