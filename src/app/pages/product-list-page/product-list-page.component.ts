@@ -5,15 +5,18 @@ import { ProductsService } from '../../shared/services/products.service';
 import { firstValueFrom } from 'rxjs';
 import { ActionsDropdownComponent } from '../../shared/components/actions-dropdown/actions-dropdown.component';
 import { Router, RouterLink, RouterModule } from '@angular/router';
+import { ProductFilterPipe } from '../../shared/pipes/product-filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule, ActionsDropdownComponent, RouterLink, RouterModule],
+  imports: [CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, ProductFilterPipe],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css'
 })
 export class ProductListPageComponent implements OnInit {
+  public productSearch: string = '';
   public products!: IProduct[];
   private _ProductsService = inject(ProductsService);
   private _Router = inject(Router);

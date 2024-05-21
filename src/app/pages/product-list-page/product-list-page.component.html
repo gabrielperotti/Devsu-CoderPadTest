@@ -1,6 +1,6 @@
 <div class="product-list-container">
   <div class="form-container">
-    <input type="text" class="search" placeholder="buscar..." />
+    <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch"/>
     <button class="add" [routerLink]="['/products', 'form']">Agregar</button>
   </div>
 
@@ -21,7 +21,7 @@
         <tr *ngIf="!products">
           <td colspan="6"> Cargando... </td>
         </tr>
-        <tr *ngFor="let product of products">
+        <tr *ngFor="let product of products | productFilter:productSearch">
           <td class="display-desktop">
             <img class="product-logo" [src]="product.logo" alt="logo" />
           </td>
