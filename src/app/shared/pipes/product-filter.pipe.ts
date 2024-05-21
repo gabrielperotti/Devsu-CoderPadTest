@@ -3,19 +3,23 @@ import { IProduct } from '../interfaces/product.interface';
 
 @Pipe({
   name: 'productFilter',
+  pure: false,
   standalone: true
 })
 export class ProductFilterPipe implements PipeTransform {
 
-  transform(products: IProduct[], filterString: string): IProduct[] {
+  transform(products: IProduct[], args: any[]): IProduct[] {
+    let [filterString, page, pageSize] = args;
     if (!products) return [];
-    if (!filterString) return products;
+    // if (!filterString) return products;
     const words = filterString.toLowerCase().split(" ");
-    return products.filter(product => {
-      return words.some(word => 
+    const filteredProducts = products.filter(product => {
+      return words.some((word: string) =>
         product.name?.toLowerCase().includes(word) ||
         product.description?.toLowerCase().includes(word)
       );
     });
+    const index = (page - 1) * +pageSize;
+    return filteredProducts.slice(index, index + +pageSize);
   }
 }

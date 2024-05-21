@@ -1,6 +1,6 @@
 <div class="product-list-container">
   <div class="form-container">
-    <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch"/>
+    <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch" (input)="onSearchInput($event)"/>
     <button class="add" [routerLink]="['/products', 'form']">Agregar</button>
   </div>
 
@@ -21,7 +21,7 @@
         <tr *ngIf="!products">
           <td colspan="6"> Cargando... </td>
         </tr>
-        <tr *ngFor="let product of products | productFilter:productSearch">
+        <tr *ngFor="let product of (products | productFilter:[productSearch,page,pageSize])">
           <td class="display-desktop">
             <img class="product-logo" [src]="product.logo" alt="logo" />
           </td>
@@ -34,7 +34,8 @@
             <div class="product-name"> {{product.name}} </div>
             <span class="product-label">Descripci&oacute;n:</span> {{product.description}}<br>
             <span class="product-label">Fecha Liberaci&oacute;n:</span> {{product.date_release | date:'dd/MM/yyyy'}}<br>
-            <span class="product-label">Fecha Reestructuraci&oacute;n:</span> {{product.date_revision | date:'dd/MM/yyyy'}}<br>
+            <span class="product-label">Fecha Reestructuraci&oacute;n:</span>
+            {{product.date_revision | date:'dd/MM/yyyy'}}<br>
           </td>
           <td class="actions">
             <app-actions-dropdown (edit)="onEdit(product)" (delete)="onDelete(product)"></app-actions-dropdown>
@@ -44,6 +45,24 @@
           <td colspan="6"> Sin productos que mostrar</td>
         </tr>
       </tbody>
+      <tfoot *ngIf="products">
+        <tr>
+          <td colspan="6">
+            <span class="results">{{productsCount}} resultados</span>
+            <span class="page-sizes">
+              Tam x Pág:
+              <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">
+                <option [value]="size" *ngFor="let size of pageSizes">{{size}}</option>
+              </select>
+            </span>
+            <span class="pages">
+              <button (click)="prevPage()" class="pointer"><img src="assets/icons/angle-left.png" alt="prevPage" /></button>
+              Pág: <input type="number" [ngModel]="page" (change)="onPageChange($event)">
+              <button (click)="nextPage()" class="pointer"><img src="assets/icons/angle-right.png" alt="nextPage" /></button>
+            </span>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>

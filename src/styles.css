@@ -77,6 +77,10 @@ table tr:hover {
   background-color: rgb(247, 247, 247);
 }
 
+table tfoot td {
+  padding: 0 20px 0 20px;
+}
+
 @media screen and (max-width: 720px) {
 
   table .display-desktop {
@@ -96,6 +100,10 @@ table tr:hover {
   table td {
     padding: 5px;
     font-style: italic;
+  }
+
+  table tfoot td {
+    padding: 0;
   }
 }
 
