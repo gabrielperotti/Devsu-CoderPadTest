@@ -48,8 +48,7 @@ export class ProductListPageComponent implements OnInit {
       this.products = await firstValueFrom(this._ProductsService.getAll());
       this.productsCount = this.products.length;
     } catch (e) {
-      console.log(e);
-      this._ErrorService.emitError('error fetching data');
+      this._ErrorService.emitError('Error al obtener los productos');
     }
   }
 
@@ -59,9 +58,15 @@ export class ProductListPageComponent implements OnInit {
 
   onDelete(product: IProduct) {
     if (confirm('Desea eliminar este producto?')) {
-      this._ProductsService.delete(product).subscribe({
-        next: async () => await this.getProducts(),
-        error: async () => await this.getProducts()
+      const subscription: any = this._ProductsService.delete(product).subscribe({
+        next: async () => {
+          await this.getProducts();
+          subscription.unsubscribe();
+        },
+        error: async () => {
+          this._ErrorService.emitError('Error al eliminar producto');
+          subscription.unsubscribe();
+        }
       });
     }
   }

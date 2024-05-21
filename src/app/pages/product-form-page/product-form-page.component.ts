@@ -44,7 +44,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       this.buildForm();
     } catch (e) {
       console.log(e);
-      this._ErrorService.emitError('error fetching data');
+      this._ErrorService.emitError('Error al obtener el producto');
     }
   }
 
@@ -71,16 +71,14 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
         startWith(''),
         debounceTime(100),
         distinctUntilChanged(),
-        /* switchMap(async newId => {
-          this._validIdInput = newId ? await firstValueFrom(this._ProductsService.verification(newId)) : false;
-          return of(newId);
-        }) */
       )
       .subscribe(async newId => {
-        this._validIdInput = newId ? !await firstValueFrom(this._ProductsService.verification(newId)) : false;
-        this._checkValidIdInput = false;
-        // const value = this.f['id'].value;
-        // console.log(value);
+        try {
+          this._validIdInput = newId ? !await firstValueFrom(this._ProductsService.verification(newId)) : false;
+          this._checkValidIdInput = false;
+        } catch (e) {
+          this._ErrorService.emitError('Error al verificar id de producto');
+        }
       })
 
     this.formValueChanged = !!this.product?.id;
@@ -102,15 +100,27 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
     data.date_release = (data.date_release ? new Date(data.date_release) : new Date()).toISOString();
     data.date_revision = (data.date_revision ? new Date(data.date_revision) : new Date()).toISOString();
     if (this.product) {
-      const subscription = this._ProductsService.update(data).subscribe(() => {
-        this._Router.navigate(['/products', 'list']);
-        subscription.unsubscribe();
+      const subscription = this._ProductsService.update(data).subscribe({
+        next: () => {
+          this._Router.navigate(['/products', 'list']);
+          subscription.unsubscribe();
+        },
+        error: () => {
+          this._ErrorService.emitError("Error al modificar producto");
+          subscription.unsubscribe();
+        }
       })
     } else {
-      const subscription = this._ProductsService.create(data).subscribe(() => {
-        this._Router.navigate(['/']);
-        subscription.unsubscribe();
-      })
+      const subscription = this._ProductsService.create(data).subscribe({
+        next: () => {
+          this._Router.navigate(['/']);
+          subscription.unsubscribe();
+        },
+        error: () => {
+          this._ErrorService.emitError("Error al crear producto");
+          subscription.unsubscribe();
+        }
+      });
     }
   }
 

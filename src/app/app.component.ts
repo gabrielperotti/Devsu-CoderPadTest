@@ -12,9 +12,9 @@ import { Subscription } from 'rxjs';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
-  errorMsgs: string[] = [];
   private _ErrorService = inject(ErrorService);
   private errorSubscription!: Subscription;
+  public errorMsgs: string[] = [];
 
   constructor() { }
 
@@ -22,12 +22,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.initializeComponent();
   }
 
-  async initializeComponent() {
-    this.errorSubscription = this._ErrorService.getErrorMessages().subscribe(
-      message => {
-        this.errorMsgs.push(message);
-      }
-    );
+  initializeComponent() {
+    this.errorSubscription = this._ErrorService.getErrorMessages()
+      .subscribe(message => this.errorMsgs.push(message));
   }
 
   closeMsg(i: number) {
