@@ -2,17 +2,19 @@
   margin-top: 25px;
 }
 
-input.search {
-  width: 300px;
-  max-width: 50vw;
-}
-
 button.add {
   background-color: gold;
   color: black;
   float: right;
   height: 44px;
   padding: 0 15px;
+  display: flex;
+  align-items: center;
+}
+
+button.add img {
+  max-width: 18px;
+  margin-right: 8px;
 }
 
 table .product-logo {
@@ -30,10 +32,14 @@ table .results {
 table .pages {
   float: right;
   padding-right: 50px;
+  display: flex;
+  align-items: center;
 }
 
 table .page-sizes {
   float: right;
+  display: flex;
+  align-items: center;
 }
 
 table .pages button {
@@ -41,12 +47,13 @@ table .pages button {
   border: none;
 }
 
-table .pages button:focus, table .pages button:hover {
+table .pages button:focus,
+table .pages button:hover {
   box-shadow: none;
 }
 
 table .pages img {
-  max-width: 15px;
+  max-width: 11px;
 }
 
 table .pages input {

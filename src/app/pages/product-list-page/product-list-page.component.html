@@ -1,7 +1,13 @@
 <div class="product-list-container">
   <div class="form-container">
-    <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch" (input)="onSearchInput($event)"/>
-    <button class="add" [routerLink]="['/products', 'form']">Agregar</button>
+    <div class="search-container">
+      <input type="text" class="search" placeholder="buscar en nombre o descripcion..." [(ngModel)]="productSearch" (input)="onSearchInput($event)"/>
+    </div>
+    
+    <button class="add" [routerLink]="['/products', 'form']">
+      <img src="assets/icons/add.png" alt="add product">
+      Agregar
+    </button>
   </div>
 
   <div class="product-list-table">
@@ -50,14 +56,13 @@
           <td colspan="6">
             <span class="results">{{productsCount}} resultados</span>
             <span class="page-sizes">
-              Tam x Pág:
-              <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">
+              Tam x Pág: &nbsp; <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">
                 <option [value]="size" *ngFor="let size of pageSizes">{{size}}</option>
               </select>
             </span>
             <span class="pages">
               <button (click)="prevPage()" class="pointer"><img src="assets/icons/angle-left.png" alt="prevPage" /></button>
-              Pág: <input type="number" [ngModel]="page" (change)="onPageChange($event)">
+              Pág: &nbsp; <input type="number" [(ngModel)]="page" (change)="onPageChange($event)">
               <button (click)="nextPage()" class="pointer"><img src="assets/icons/angle-right.png" alt="nextPage" /></button>
             </span>
           </td>

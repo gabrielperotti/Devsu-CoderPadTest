@@ -74,7 +74,13 @@ export class ProductListPageComponent implements OnInit {
   }
 
   onPageChange(event: any) {
-    try { this.page = event.target.value } catch (e) { this.page = 1 }
+    const newPage = event.target.value;
+    const maxPage = Math.ceil(this.products.length / this.pageSize);
+    try {
+      this.page = newPage <= 1 ? 1 :
+        newPage >= maxPage ? maxPage :
+          event.target.value;
+    } catch (e) { this.page = 1 }
   }
 
   prevPage() {

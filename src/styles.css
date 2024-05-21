@@ -36,6 +36,41 @@ body {
   color: rgb(12, 62, 118);
 }
 
+/* search input ----------------------------------------------------------------------- */
+
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+input.search {
+  padding-left: 35px;
+  width: 300px;
+  max-width: 50vw;
+}
+
+.search-container::before {
+  content: '';
+  background: url('assets/icons/search.png') no-repeat center center;
+  background-size: contain;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media screen and (max-width: 720px) {
+
+  input.search {
+    padding-left: 30px;
+    width: 300px;
+    max-width: 40vw;
+  }
+}
 
 /* table responsive styles ------------------------------------------------------------ */
 .product-list-table {
@@ -134,7 +169,8 @@ input::placeholder {
   color: rgb(180, 180, 180);
 }
 
-input:read-only, input:disabled {
+input:read-only,
+input:disabled {
   background-color: rgb(232, 232, 232);
   color: rgb(130, 130, 130);
 }
