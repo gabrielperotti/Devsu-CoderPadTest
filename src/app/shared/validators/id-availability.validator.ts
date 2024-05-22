@@ -4,7 +4,7 @@ import { catchError, finalize, map, tap, of, timeout } from 'rxjs';
 
 export function idAvailabilityValidator(productsService: ProductsService, setLoading: (loading: boolean) => void): AsyncValidatorFn {
   return (control: AbstractControl) => {
-    if (!control.value) {
+    if (!control.value || control.value.length < 3) {
       setLoading(false);
       return of(null);
     }

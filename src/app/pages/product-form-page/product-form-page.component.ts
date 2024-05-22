@@ -7,6 +7,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap, tap } from 'rxjs';
 import { ErrorService } from '../../shared/services/error.service';
 import { idAvailabilityValidator } from '../../shared/validators/id-availability.validator';
+import { dateValidator } from '../../shared/validators/date.validator';
+import { dateRangeValidator } from '../../shared/validators/date-range.validator';
 
 @Component({
   selector: 'app-product-form-page',
@@ -28,6 +30,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private _ErrorService = inject(ErrorService);
 
   private _formChangeSub!: Subscription;
+  private _dateReleaseChangeSub!: Subscription;
   public _validIdInput = true;
   public _checkValidIdInput = false;
 
@@ -56,21 +59,32 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   buildForm() {
     const date_release = (this.product?.date_release ? new Date(this.product?.date_release) : new Date()).toISOString().substring(0, 10);
     const date_revision = (this.product?.date_revision ? new Date(this.product?.date_revision) : new Date()).toISOString().substring(0, 10);
+    const idValidators: any = { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(10)] };
+    if (!this.product) {
+      idValidators.asyncValidators = [idAvailabilityValidator(this._ProductsService, this.checkValidIdInput.bind(this))];
+      idValidators.updateOn = 'change'
+    }
     this.form = this._FormBuilder.group({
-      id: [this.product?.id ?? '', {
-        validators: [Validators.required],
-        asyncValidators: [idAvailabilityValidator(this._ProductsService, this.checkValidIdInput.bind(this))],
-        updateOn: 'change'
-      }],
-      name: [this.product?.name ?? '', Validators.required],
-      description: [this.product?.description ?? '', Validators.required],
+      id: [this.product?.id ?? '', idValidators],
+      name: [this.product?.name ?? '', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(100)])],
+      description: [this.product?.description ?? '', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
       logo: [this.product?.logo ?? '', Validators.required],
-      date_release: [date_release, Validators.required],
+      date_release: [date_release, Validators.compose([Validators.required, dateValidator()])],
       date_revision: [{ value: date_revision, disabled: true }, Validators.required],
+    }, {
+      validators: dateRangeValidator('date_release', 'date_revision')
     })
 
     this._formChangeSub = this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
+    });
+
+    this._dateReleaseChangeSub = this.f['date_release'].valueChanges.subscribe(value => {
+      if (value) {
+        const newDate = new Date(value);
+        newDate.setFullYear(newDate.getFullYear() + 1);
+        this.f['date_revision'].setValue(newDate.toISOString().substring(0, 10), { emitEvent: false });
+      }
     });
 
     this.formValueChanged = !!this.product?.id;
@@ -118,5 +132,6 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._formChangeSub.unsubscribe();
+    this._dateReleaseChangeSub.unsubscribe();
   }
 }

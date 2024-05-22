@@ -56,16 +56,19 @@ export class ProductListPageComponent implements OnInit {
     this._Router.navigate(['/products', 'form'], { queryParams: { id: product.id } })
   }
 
+  /* refactor: create confirmation dialog */
   onDelete(product: IProduct) {
     if (confirm('Desea eliminar este producto?')) {
       const subscription: any = this._ProductsService.delete(product).subscribe({
         next: async () => {
           await this.getProducts();
           subscription.unsubscribe();
+          this._ChangeDetectorRef.detectChanges();
         },
         error: async () => {
           this._ErrorService.emitError('Error al eliminar producto');
           subscription.unsubscribe();
+          this._ChangeDetectorRef.detectChanges();
         }
       });
     }

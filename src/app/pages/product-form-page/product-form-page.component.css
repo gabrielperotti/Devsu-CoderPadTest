@@ -38,12 +38,8 @@
   font-weight: bold;
 }
 
-.form-control label.isInvalid {
+.form-control label span.isInvalid {
   color: red;
-}
-
-.form-control .required {
-  /* algo de la altura del asterisco */
 }
 
 .form-control input {

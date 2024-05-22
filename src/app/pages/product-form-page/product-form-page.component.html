@@ -9,17 +9,20 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required']) || f['id'].errors?.['idTaken']}">
-            ID <span class="required">*</span>
+          <label for="id">
+            ID <span class="required"
+              [ngClass]="{isInvalid: ((submitted && (f['id'].errors?.['required'] || (f['id'].errors?.['minlength'] || f['id'].errors?.['maxlength']))) || f['id'].errors?.['idTaken'])}">*</span>
           </label>
           <input type="text" id="id" name="id" formControlName="id" placeholder="id del producto"
-            [readOnly]="product?.id" [ngClass]="{isInvalid: (submitted && f['id'].errors?.['required']) || f['id'].errors?.['idTaken']}">
+            [readOnly]="product?.id"
+            [ngClass]="{isInvalid: ((submitted && (f['id'].errors?.['required'] || (f['id'].errors?.['minlength'] || f['id'].errors?.['maxlength']))) || f['id'].errors?.['idTaken'])}">
 
           <span *ngIf="!product?.id">
             <div class="hint" *ngIf="_checkValidIdInput && f['id'].value?.length > 0">
               Comprobando...
             </div>
-            <div class="success" *ngIf="f['id'].value.length > 0 && !_checkValidIdInput && !f['id'].errors?.['idTaken']">
+            <div class="success"
+              *ngIf="f['id'].value?.length >= 3 && !_checkValidIdInput && !f['id'].errors?.['idTaken']">
               ID disponible!
             </div>
             <div class="error" *ngIf="!_checkValidIdInput && f['id'].errors?.['idTaken']">
@@ -37,10 +40,15 @@
 
         <div class="form-control">
           <label for="name" [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
-            Nombre <span class="required">*</span>
+            Nombre <span class="required"
+              [ngClass]="{isInvalid: (submitted && (f['description'].errors?.['required'] || f['name'].errors?.['minlength'] || f['name'].errors?.['maxlength']))}">*</span>
           </label>
           <input type="text" id="name" name="name" formControlName="name" placeholder="nombre" autocomplete="off"
-            [ngClass]="{isInvalid: (submitted && f['name'].errors?.['required'])}">
+            [ngClass]="{isInvalid: (submitted && (f['description'].errors?.['required'] || f['name'].errors?.['minlength'] || f['name'].errors?.['maxlength']))}">
+
+          <div class="error" *ngIf="submitted && (f['name'].errors?.['minlength'] || f['name'].errors?.['maxlength'])">
+            Largo mínimo 5 y máximo 100!
+          </div>
           <div class="error" *ngIf="submitted && f['name'].errors?.['required']">
             Este campo es requerido!
           </div>
@@ -49,23 +57,30 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="description" [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
-            Descripci&oacute;n <span class="required">*</span>
+          <label for="description">
+            Descripci&oacute;n <span class="required"
+              [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">*</span>
           </label>
           <input type="text" id="description" name="description" formControlName="description"
             placeholder="Descripci&oacute;n detallada"
             [ngClass]="{isInvalid: (submitted && f['description'].errors?.['required'])}">
+
+          <div class="error"
+            *ngIf="submitted && (f['description'].errors?.['minlength'] || f['description'].errors?.['maxlength'])">
+            Largo mínimo 10 y máximo 200!
+          </div>
           <div class="error" *ngIf="submitted && f['description'].errors?.['required']">
             Este campo es requerido!
           </div>
         </div>
 
         <div class="form-control">
-          <label for="logo" [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
-            Logo <span class="required">*</span>
+          <label for="logo">
+            Logo <span class="required" [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">*</span>
           </label>
           <input type="text" id="logo" name="logo" formControlName="logo" placeholder="url del logo"
             [ngClass]="{isInvalid: (submitted && f['logo'].errors?.['required'])}">
+
           <div class="error" *ngIf="submitted && f['logo'].errors?.['required']">
             Este campo es requerido!
           </div>
@@ -74,24 +89,31 @@
 
       <div class="form-row">
         <div class="form-control">
-          <label for="date_release" [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
+          <label for="date_release"
+            [ngClass]="{isInvalid: (submitted && (f['date_release'].errors?.['required'] || f['date_release'].errors?.['dateInvalid']))}">
             Fecha de Liberaci&oacute;n <span class="required">*</span>
           </label>
           <input type="date" id="date_release" name="date_release" formControlName="date_release"
-            [ngClass]="{isInvalid: (submitted && f['date_release'].errors?.['required'])}">
+            [ngClass]="{isInvalid: (submitted && (f['date_release'].errors?.['required'] || f['date_release'].errors?.['dateInvalid']))}">
+
           <div class="error" *ngIf="submitted && f['date_release'].errors?.['required']">
             Este campo es requerido!
+          </div>
+          <div class="error" *ngIf="submitted && f['date_release'].errors?.['dateInvalid']">
+            La fecha debe ser igual o mayor a la actual
           </div>
         </div>
 
         <div class="form-control">
-          <label for="date_revision" [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
-            Fecha de revisi&oacute;n <span class="required">*</span>
+          <label for="date_revision">
+            Fecha de revisi&oacute;n <span class="required"
+              [ngClass]="{isInvalid: submitted && (f['date_revision'].errors?.['dateInvalid'] || form.errors?.['dateRangeInvalid'])}">*</span>
           </label>
           <input type="date" id="date_revision" name="date_revision" formControlName="date_revision"
-            [ngClass]="{isInvalid: (submitted && f['date_revision'].errors?.['required'])}">
-          <div class="error" *ngIf="submitted && f['date_revision'].errors?.['required']">
-            Este campo es requerido!
+            [ngClass]="{isInvalid: submitted && (f['date_revision'].errors?.['dateInvalid'] || form.errors?.['dateRangeInvalid'])}">
+
+          <div class="error" *ngIf="submitted && form.errors?.['dateRangeInvalid']">
+            La fecha de revisión debe ser mayor o igual a la fecha de liberación!
           </div>
         </div>
       </div>
