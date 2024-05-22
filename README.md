@@ -29,6 +29,14 @@ docker-compose up --build
 ```
 Esto construirá y levantará todos los servicios necesarios. Luego, Ingresa a http://localhost/
 
+## Cómo Testear
+
+```
+npm run test
+npm run test:watch
+npm run test:coverage
+```
+
 ## Proyecto descargable .zip
 
 https://gabrielperotti.com/demo/devsu/source.zip
