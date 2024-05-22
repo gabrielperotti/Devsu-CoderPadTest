@@ -143,7 +143,8 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._formChangeSub.unsubscribe();
-    this._dateReleaseChangeSub.unsubscribe();
+    /* refactor: to avoid test issues */
+    if (this._formChangeSub) this._formChangeSub.unsubscribe();
+    if (this._dateReleaseChangeSub) this._dateReleaseChangeSub.unsubscribe();
   }
 }
