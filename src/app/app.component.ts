@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private _ErrorService = inject(ErrorService);
-  private errorSubscription!: Subscription;
+  public errorSubscription!: Subscription;
   public errorMsgs: string[] = [];
 
   constructor() { }
