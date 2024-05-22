@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
@@ -15,7 +15,8 @@ import { dateRangeValidator } from '../../shared/validators/date-range.validator
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './product-form-page.component.html',
-  styleUrl: './product-form-page.component.css'
+  styleUrl: './product-form-page.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductFormPageComponent implements OnInit, OnDestroy {
   public form!: UntypedFormGroup;
@@ -28,6 +29,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private _Router = inject(Router);
   private _route = inject(ActivatedRoute);
   private _ErrorService = inject(ErrorService);
+  private _ChangeDetectorRef = inject(ChangeDetectorRef);
 
   private _formChangeSub!: Subscription;
   private _dateReleaseChangeSub!: Subscription;
@@ -48,11 +50,13 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
     } catch (e) {
       console.log(e);
       this._ErrorService.emitError('Error al obtener el producto');
+      this._ChangeDetectorRef.markForCheck();
     }
   }
 
   checkValidIdInput(loading: boolean) {
     this._checkValidIdInput = loading;
+    this._ChangeDetectorRef.markForCheck();
   }
 
   get f() { return this.form.controls }
@@ -77,6 +81,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
 
     this._formChangeSub = this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
+      this._ChangeDetectorRef.markForCheck();
     });
 
     this._dateReleaseChangeSub = this.f['date_release'].valueChanges.subscribe(value => {
@@ -84,10 +89,12 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
         const newDate = new Date(value);
         newDate.setFullYear(newDate.getFullYear() + 1);
         this.f['date_revision'].setValue(newDate.toISOString().substring(0, 10), { emitEvent: false });
+        this._ChangeDetectorRef.markForCheck();
       }
     });
 
     this.formValueChanged = !!this.product?.id;
+    this._ChangeDetectorRef.markForCheck();
   }
 
   return() {
@@ -97,6 +104,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   reset() {
     this.form.reset();
     this.formValueChanged = false;
+    this._ChangeDetectorRef.markForCheck();
   }
 
   onSubmit() {
@@ -110,10 +118,12 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
         next: () => {
           this._Router.navigate(['/products', 'list']);
           subscription.unsubscribe();
+          this._ChangeDetectorRef.markForCheck();
         },
         error: () => {
           this._ErrorService.emitError("Error al modificar producto");
           subscription.unsubscribe();
+          this._ChangeDetectorRef.markForCheck();
         }
       })
     } else {
@@ -121,10 +131,12 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
         next: () => {
           this._Router.navigate(['/']);
           subscription.unsubscribe();
+          this._ChangeDetectorRef.markForCheck();
         },
         error: () => {
           this._ErrorService.emitError("Error al crear producto");
           subscription.unsubscribe();
+          this._ChangeDetectorRef.markForCheck();
         }
       });
     }

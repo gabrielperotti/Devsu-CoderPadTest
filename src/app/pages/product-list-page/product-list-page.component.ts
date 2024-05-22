@@ -39,7 +39,7 @@ export class ProductListPageComponent implements OnInit {
 
   async initializeComponent() {
     await this.getProducts();
-    this._ChangeDetectorRef.detectChanges();
+    this._ChangeDetectorRef.markForCheck();
   }
 
   async getProducts() {
@@ -63,12 +63,12 @@ export class ProductListPageComponent implements OnInit {
         next: async () => {
           await this.getProducts();
           subscription.unsubscribe();
-          this._ChangeDetectorRef.detectChanges();
+          this._ChangeDetectorRef.markForCheck();
         },
         error: async () => {
           this._ErrorService.emitError('Error al eliminar producto');
           subscription.unsubscribe();
-          this._ChangeDetectorRef.detectChanges();
+          this._ChangeDetectorRef.markForCheck();
         }
       });
     }
