@@ -1,0 +1,36 @@
+/* product-table-skeleton.component.css */
+.skeleton-table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.skeleton-row {
+  display: table-row;
+}
+
+.skeleton-cell {
+  display: table-cell;
+  height: 30px;
+  background-color: #e0e0e0;
+  animation: skeleton-loading 1.5s infinite;
+  margin: 5px 0;
+}
+
+.header .skeleton-cell {
+  height: 30px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+
+  50% {
+    background-color: #f0f0f0;
+  }
+
+  100% {
+    background-color: #e0e0e0;
+  }
+}

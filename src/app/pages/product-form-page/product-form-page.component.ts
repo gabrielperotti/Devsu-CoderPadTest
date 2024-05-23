@@ -9,11 +9,12 @@ import { ErrorService } from '../../shared/services/error.service';
 import { idAvailabilityValidator } from '../../shared/validators/id-availability.validator';
 import { dateValidator } from '../../shared/validators/date.validator';
 import { dateRangeValidator } from '../../shared/validators/date-range.validator';
+import { FormSkeletonComponent } from '../../shared/components/form-skeleton/form-skeleton.component';
 
 @Component({
   selector: 'app-product-form-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormSkeletonComponent],
   templateUrl: './product-form-page.component.html',
   styleUrl: './product-form-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,6 +24,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   public product!: IProduct | undefined;
   public submitted = false;
   public formValueChanged = false;
+  public isLoading = false;
 
   private _ProductsService = inject(ProductsService);
   private _FormBuilder = inject(UntypedFormBuilder);
@@ -43,6 +45,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   async initializeComponent() {
+    this.isLoading = true;
     try {
       const id = this._route.snapshot.queryParamMap.get('id');
       this.product = id ? await firstValueFrom(this._ProductsService.getOne(id)) : undefined;
@@ -52,6 +55,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       this._ErrorService.emitError('Error al obtener el producto');
       this._ChangeDetectorRef.markForCheck();
     }
+    this.isLoading = false;
   }
 
   checkValidIdInput(loading: boolean) {

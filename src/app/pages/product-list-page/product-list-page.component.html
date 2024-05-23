@@ -12,7 +12,8 @@
   </div>
 
   <div class="product-list-table">
-    <table>
+    <app-table-skeleton *ngIf="isLoading"></app-table-skeleton>
+    <table *ngIf="!isLoading">
       <thead>
         <tr>
           <th class="display-desktop">Logo</th>
@@ -25,9 +26,6 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="!products">
-          <td colspan="6"> Cargando... </td>
-        </tr>
         <tr *ngFor="let product of (products | productFilter:[productSearch,page,pageSize])">
           <td class="display-desktop pointer">
             <img class="product-logo" [src]="product.logo" alt="logo" (click)="openImageModal(product.logo)" />
@@ -53,7 +51,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="tfoot" *ngIf="products">
+    <div class="tfoot" *ngIf="!isLoading && products">
       <span class="results">{{productsCount}} resultados</span>
       <span class="page-sizes">
         Tam: &nbsp; <select [(ngModel)]="pageSize" (change)="onSizeChange($event)">

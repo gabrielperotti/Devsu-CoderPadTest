@@ -5,7 +5,8 @@
       Formulario de Registro
     </div>
 
-    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-form-skeleton *ngIf="isLoading"></app-form-skeleton>
+    <form *ngIf="form && !isLoading" [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <div class="form-row">
         <div class="form-control">

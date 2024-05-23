@@ -10,19 +10,21 @@ import { FormsModule } from '@angular/forms';
 import { ErrorService } from '../../shared/services/error.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 import { ImageModalComponent } from '../../shared/components/image-modal/image-modal.component';
+import { TableSkeletonComponent } from '../../shared/components/table-skeleton/table-skeleton.component';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
   imports: [
     CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, 
-    ProductFilterPipe, ConfirmationModalComponent, ImageModalComponent
+    ProductFilterPipe, ConfirmationModalComponent, ImageModalComponent, TableSkeletonComponent
   ],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductListPageComponent implements OnInit {
+  public isLoading = false;
   public productSearch: string = '';
   public products!: IProduct[];
   public productsCount = 0;
@@ -52,6 +54,7 @@ export class ProductListPageComponent implements OnInit {
   }
 
   async getProducts() {
+    this.isLoading = true;
     try {
       this.products = [];
       this.products = await firstValueFrom(this._ProductsService.getAll());
@@ -59,6 +62,7 @@ export class ProductListPageComponent implements OnInit {
     } catch (e) {
       this._ErrorService.emitError('Error al obtener los productos');
     }
+    this.isLoading = false;
   }
 
   onEdit(product: IProduct) {
