@@ -67,4 +67,8 @@
       </span>
     </div>
   </div>
+
+  <app-confirmation-modal *ngIf="showModal" title="Confirmar eliminación" message="¿Desea eliminar este producto?"
+    (confirmed)="confirmDelete()" (canceled)="cancelDelete()">
+  </app-confirmation-modal>
 </div>

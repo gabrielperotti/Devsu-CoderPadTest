@@ -8,11 +8,12 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ProductFilterPipe } from '../../shared/pipes/product-filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ErrorService } from '../../shared/services/error.service';
+import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, ProductFilterPipe],
+  imports: [CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, ProductFilterPipe, ConfirmationModalComponent],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,6 +23,8 @@ export class ProductListPageComponent implements OnInit {
   public products!: IProduct[];
   public productsCount = 0;
   public filteredProducts!: IProduct[];
+  public showModal: boolean = false;
+  public productToDelete: IProduct | null = null;
   private _ProductsService = inject(ProductsService);
   private _Router = inject(Router);
   private _ChangeDetectorRef = inject(ChangeDetectorRef);
@@ -56,10 +59,14 @@ export class ProductListPageComponent implements OnInit {
     this._Router.navigate(['/products', 'form'], { queryParams: { id: product.id } })
   }
 
-  /* refactor: create confirmation dialog */
   onDelete(product: IProduct) {
-    if (confirm('Desea eliminar este producto?')) {
-      const subscription: any = this._ProductsService.delete(product).subscribe({
+    this.productToDelete = product;
+    this.showModal = true;
+  }
+
+  confirmDelete() {
+    if (this.productToDelete) {
+      const subscription: any = this._ProductsService.delete(this.productToDelete).subscribe({
         next: async () => {
           await this.getProducts();
           subscription.unsubscribe();
@@ -71,7 +78,14 @@ export class ProductListPageComponent implements OnInit {
           this._ChangeDetectorRef.markForCheck();
         }
       });
+      this.productToDelete = null;
+      this.showModal = false;
     }
+  }
+
+  cancelDelete() {
+    this.productToDelete = null;
+    this.showModal = false;
   }
 
   onSearchInput(event: Event) {
