@@ -4,7 +4,7 @@ import { AbstractControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGr
 import { IProduct } from '../../shared/interfaces/product.interface';
 import { ProductsService } from '../../shared/services/products.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Subscription, debounceTime, distinctUntilChanged, firstValueFrom, of, startWith, switchMap, tap } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { ErrorService } from '../../shared/services/error.service';
 import { idAvailabilityValidator } from '../../shared/validators/id-availability.validator';
 import { dateValidator } from '../../shared/validators/date.validator';
@@ -48,7 +48,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       this.product = id ? await firstValueFrom(this._ProductsService.getOne(id)) : undefined;
       this.buildForm();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       this._ErrorService.emitError('Error al obtener el producto');
       this._ChangeDetectorRef.markForCheck();
     }
@@ -60,13 +60,14 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   get f() { return this.form.controls }
+
   buildForm() {
     const date_release = (this.product?.date_release ? new Date(this.product?.date_release) : new Date()).toISOString().substring(0, 10);
     const date_revision = (this.product?.date_revision ? new Date(this.product?.date_revision) : new Date()).toISOString().substring(0, 10);
     const idValidators: any = { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(10)] };
     if (!this.product) {
       idValidators.asyncValidators = [idAvailabilityValidator(this._ProductsService, this.checkValidIdInput.bind(this))];
-      idValidators.updateOn = 'change'
+      idValidators.updateOn = 'change';
     }
     this.form = this._FormBuilder.group({
       id: [this.product?.id ?? '', idValidators],
@@ -77,7 +78,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       date_revision: [{ value: date_revision, disabled: true }, Validators.required],
     }, {
       validators: dateRangeValidator('date_release', 'date_revision')
-    })
+    });
 
     this._formChangeSub = this.form.valueChanges.subscribe(() => {
       this.formValueChanged = true;
@@ -125,17 +126,17 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
           subscription.unsubscribe();
           this._ChangeDetectorRef.markForCheck();
         }
-      })
+      });
     } else {
       const subscription = this._ProductsService.create(data).subscribe({
         next: () => {
           this._Router.navigate(['/']);
-          subscription.unsubscribe();
-          this._ChangeDetectorRef.markForCheck();
+          // subscription.unsubscribe();
+          // this._ChangeDetectorRef.markForCheck();
         },
         error: () => {
           this._ErrorService.emitError("Error al crear producto");
-          subscription.unsubscribe();
+          // subscription.unsubscribe();
           this._ChangeDetectorRef.markForCheck();
         }
       });
@@ -143,7 +144,6 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    /* refactor: to avoid test issues */
     if (this._formChangeSub) this._formChangeSub.unsubscribe();
     if (this._dateReleaseChangeSub) this._dateReleaseChangeSub.unsubscribe();
   }
