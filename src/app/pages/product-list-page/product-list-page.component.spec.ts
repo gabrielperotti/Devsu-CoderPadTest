@@ -95,11 +95,11 @@ describe('ProductListPageComponent', () => {
   });
 
   it('should delete a product', async () => {
-    jest.spyOn(window, 'confirm').mockReturnValue(true);
     const product: IProduct = { id: '1', name: 'Product 1', description: 'Description 1', logo: 'logo1.png', date_release: '2021-01-01', date_revision: '2022-01-01' };
     jest.spyOn(productsService, 'delete').mockReturnValue(of(true));
 
     await component.onDelete(product);
+    await component.confirmDelete();
     fixture.detectChanges();
 
     expect(productsService.delete).toHaveBeenCalledWith(product);
