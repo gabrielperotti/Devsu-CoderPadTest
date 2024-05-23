@@ -1,6 +1,6 @@
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { ProductsService } from '../../shared/services/products.service';
-import { catchError, finalize, map, tap, of, timeout } from 'rxjs';
+import { catchError, finalize, map, tap, of, timeout, Observable } from 'rxjs';
 
 export function idAvailabilityValidator(productsService: ProductsService, setLoading: (loading: boolean) => void): AsyncValidatorFn {
   return (control: AbstractControl) => {
