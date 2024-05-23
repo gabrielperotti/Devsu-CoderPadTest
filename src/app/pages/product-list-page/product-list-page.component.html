@@ -29,8 +29,8 @@
           <td colspan="6"> Cargando... </td>
         </tr>
         <tr *ngFor="let product of (products | productFilter:[productSearch,page,pageSize])">
-          <td class="display-desktop">
-            <img class="product-logo" [src]="product.logo" alt="logo" />
+          <td class="display-desktop pointer">
+            <img class="product-logo" [src]="product.logo" alt="logo" (click)="openImageModal(product.logo)" />
           </td>
           <td class="display-desktop">{{product.name}}</td>
           <td class="display-desktop">{{product.description}}</td>
@@ -68,7 +68,10 @@
     </div>
   </div>
 
-  <app-confirmation-modal *ngIf="showModal" title="Confirmar eliminación" message="¿Desea eliminar este producto?"
+  <app-confirmation-modal *ngIf="showDeleteModal" title="Confirmar eliminación" message="¿Desea eliminar este producto?"
     (confirmed)="confirmDelete()" (canceled)="cancelDelete()">
   </app-confirmation-modal>
+
+  <app-image-modal *ngIf="showImageModal" [imageUrl]="imageUrl" (closed)="closeImageModal()">
+  </app-image-modal>
 </div>

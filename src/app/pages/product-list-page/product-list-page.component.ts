@@ -9,11 +9,15 @@ import { ProductFilterPipe } from '../../shared/pipes/product-filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ErrorService } from '../../shared/services/error.service';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
+import { ImageModalComponent } from '../../shared/components/image-modal/image-modal.component';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, ProductFilterPipe, ConfirmationModalComponent],
+  imports: [
+    CommonModule, FormsModule, ActionsDropdownComponent, RouterLink, RouterModule, 
+    ProductFilterPipe, ConfirmationModalComponent, ImageModalComponent
+  ],
   templateUrl: './product-list-page.component.html',
   styleUrl: './product-list-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,8 +27,10 @@ export class ProductListPageComponent implements OnInit {
   public products!: IProduct[];
   public productsCount = 0;
   public filteredProducts!: IProduct[];
-  public showModal: boolean = false;
+  public showDeleteModal: boolean = false;
   public productToDelete: IProduct | null = null;
+  public showImageModal: boolean = false;
+  public imageUrl: string = '';
   private _ProductsService = inject(ProductsService);
   private _Router = inject(Router);
   private _ChangeDetectorRef = inject(ChangeDetectorRef);
@@ -61,7 +67,7 @@ export class ProductListPageComponent implements OnInit {
 
   onDelete(product: IProduct) {
     this.productToDelete = product;
-    this.showModal = true;
+    this.showDeleteModal = true;
   }
 
   confirmDelete() {
@@ -79,13 +85,13 @@ export class ProductListPageComponent implements OnInit {
         }
       });
       this.productToDelete = null;
-      this.showModal = false;
+      this.showDeleteModal = false;
     }
   }
 
   cancelDelete() {
     this.productToDelete = null;
-    this.showModal = false;
+    this.showDeleteModal = false;
   }
 
   onSearchInput(event: Event) {
@@ -114,5 +120,15 @@ export class ProductListPageComponent implements OnInit {
   nextPage() {
     const maxPage = Math.ceil(this.products.length / this.pageSize);
     this.page = this.page >= maxPage ? maxPage : ++this.page;
+  }
+
+  openImageModal(imageUrl: string = '') {
+    this.imageUrl = imageUrl;
+    this.showImageModal = true;
+  }
+
+  closeImageModal() {
+    this.showImageModal = false;
+    this.imageUrl = '';
   }
 }
