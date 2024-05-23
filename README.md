@@ -35,6 +35,8 @@ Esto construirá y levantará todos los servicios necesarios. Luego, Ingresa a h
 npm run test
 npm run test:watch
 npm run test:coverage
+npm test -- src/app/app.component.spec.ts (archivo especifico)
+
 ```
 
 ## Proyecto descargable .zip
