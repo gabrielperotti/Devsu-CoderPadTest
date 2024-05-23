@@ -36,24 +36,34 @@
   margin-top: 20px;
 }
 
+button.add {
+  background-color: gold;
+  color: black;
+  float: right;
+  height: 44px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+}
+
+button.add img {
+  max-width: 18px;
+  margin-right: 8px;
+}
+
 .modal-actions button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  height: 44px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
 }
 
-.modal-actions button:hover {
-  background-color: #0056b3;
+.modal-actions .confirm {
+  background-color: gold;
+  color: black;
 }
 
-.modal-actions button:nth-child(2) {
-  background-color: #6c757d;
-}
-
-.modal-actions button:nth-child(2):hover {
-  background-color: #5a6268;
+.modal-actions .close {
+  background-color: rgb(231, 231, 231);
+  color: black;
 }
